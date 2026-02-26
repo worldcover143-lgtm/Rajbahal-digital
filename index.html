@@ -3,62 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajbahal Digital - Services</title>
+    <title>Rajbahal Digital - Documents & Booking</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; }
-        .header { background: #004aad; color: white; padding: 15px; text-align: center; border-radius: 10px 10px 0 0; }
-        .main-container { background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; max-width: 500px; margin: auto; }
-        .service-list { padding: 15px; }
-        .service-item { border-bottom: 1px solid #eee; padding: 15px 0; }
-        .service-item:last-child { border-bottom: none; }
-        .service-title { font-weight: bold; color: #333; font-size: 16px; margin-bottom: 5px; }
-        .service-desc { color: #666; font-size: 13px; margin-bottom: 10px; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 10px; }
+        .container { background: white; max-width: 600px; margin: auto; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: #004aad; color: white; padding: 15px; text-align: center; }
+        .section { padding: 15px; border-bottom: 5px solid #f4f4f4; }
+        .doc-title { font-weight: bold; color: #004aad; font-size: 18px; margin-bottom: 10px; display: block; }
+        .doc-content { font-size: 14px; color: #333; line-height: 1.6; white-space: pre-wrap; }
         
-        input, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        .book-btn { background: #004aad; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        
-        #success-msg { display: none; background: #d4edda; color: #155724; padding: 15px; text-align: center; font-weight: bold; border-radius: 5px; margin: 10px; }
+        /* Form Styling */
+        .booking-form { background: #fff; padding: 20px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: #004aad; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        #success { display: none; color: green; font-weight: bold; text-align: center; padding: 10px; }
     </style>
 </head>
 <body>
 
-<div class="main-container">
+<div class="container">
     <div class="header">
-        <h2 style="margin:0;">Rajbahal Digital</h2>
-        <p style="margin:5px 0 0; font-size:14px;">Online Janaseva Kendra</p>
+        <h1>Rajbahal Digital</h1>
+        <p>Janaseva Kendra Services</p>
     </div>
 
-    <div id="success-msg">✅ Dhanyawad! Booking Successful.</div>
+    <div class="section">
+        <span class="doc-title">📄 Service Details (Sabu Seva)</span>
+        <div class="doc-content">
+Aapne jo photos bheji hain, wahan ki saari details yahan dikhengi:
+- Aadhaar Card (New/Update)
+- PAN Card Services
+- Ration Card List & Apply
+- Income/Caste/Residence Cert.
+- Voter ID & Banking Services
+        </div>
+    </div>
 
-    <div class="service-list">
-        <form id="appointmentForm">
-            <div class="service-item">
-                <div class="service-title">Customer Name / ନାମ</div>
-                <input type="text" id="name" placeholder="Enter Full Name" required>
-            </div>
-
-            <div class="service-item">
-                <div class="service-title">WhatsApp Number / ମୋବାଇଲ୍</div>
-                <input type="tel" id="phone" placeholder="91XXXXXXXX" required>
-            </div>
-
-            <div class="service-item">
-                <div class="service-title">Select Service / ସେବା ବାଛନ୍ତୁ</div>
-                <select id="service">
-                    <option value="Aadhaar Service">Aadhaar Card (Update/New)</option>
-                    <option value="PAN Card">PAN Card (New/Correction)</option>
-                    <option value="Ration Card">Ration Card (New/Add Member)</option>
-                    <option value="Certificate">Income/Caste/Residence Cert.</option>
-                    <option value="Voter ID">Voter ID Card Services</option>
-                    <option value="Banking">Money Transfer/Withdrawal</option>
-                    <option value="Insurance">Vehicle/Life Insurance</option>
-                    <option value="Tickets">Railway/Flight Ticket Booking</option>
-                    <option value="Other">Other Digital Works</option>
-                </select>
-            </div>
-
-            <button type="submit" class="book-btn">BOOK NOW / ଏବେ ବୁକ୍ କରନ୍ତୁ</button>
+    <div class="section booking-form">
+        <span class="doc-title">📅 Book Appointment</span>
+        <form id="mainForm">
+            <input type="text" id="custName" placeholder="Full Name / ନାମ" required>
+            <input type="tel" id="custPhone" placeholder="WhatsApp Number / ମୋବାଇଲ୍" required>
+            <select id="custService">
+                <option value="Aadhaar">Aadhaar Service</option>
+                <option value="PAN">PAN Card</option>
+                <option value="Ration">Ration Card</option>
+                <option value="Certificate">Certificate Service</option>
+                <option value="Other">Other Works</option>
+            </select>
+            <button type="submit" class="btn">SUBMIT REQUEST</button>
         </form>
+        <div id="success">✅ Dhanyawad! Booking Successful.</div>
     </div>
 </div>
 
@@ -75,26 +70,22 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+    document.getElementById('mainForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const service = document.getElementById('service').value;
-
-        const newApptRef = push(ref(db, 'appointments'));
-        set(newApptRef, {
-            name: name,
-            phone: phone,
-            service: service,
-            status: 'Pending',
+        const data = {
+            name: document.getElementById('custName').value,
+            phone: document.getElementById('custPhone').value,
+            service: document.getElementById('custService').value,
             date: new Date().toLocaleString()
-        }).then(() => {
-            document.getElementById('success-msg').style.display = 'block';
-            document.getElementById('appointmentForm').style.display = 'none';
+        };
+
+        const newRef = push(ref(db, 'appointments'));
+        set(newRef, data).then(() => {
+            document.getElementById('mainForm').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
         });
     });
 </script>
 
 </body>
 </html>
-
