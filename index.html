@@ -1,65 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="or">
 <head>
-<meta charset="UTF-8">
-<title>Rajbahal Digital & Education Hub</title>
-<style>
-body{font-family:Arial;background:#f4f7f6;text-align:center;padding:20px}
-form{max-width:400px;margin:auto;background:white;padding:20px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.1)}
-input,select{width:100%;padding:10px;margin:10px 0}
-button{padding:10px;background:#28a745;color:white;border:none;border-radius:5px;cursor:pointer}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajbahal Digital - Online Services</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #004aad, #cb2d3e); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .form-container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 450px; }
+        h2 { color: #004aad; text-align: center; border-bottom: 2px solid #004aad; padding-bottom: 10px; }
+        label { font-weight: bold; display: block; margin: 12px 0 5px; color: #333; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        button { width: 100%; padding: 15px; background: #004aad; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #003580; transform: translateY(-2px); }
+        #success-msg { display: none; color: #28a745; text-align: center; font-weight: bold; margin-top: 15px; border: 1px solid #28a745; padding: 10px; border-radius: 5px; }
+    </style>
 </head>
 <body>
 
-<h2>Book Appointment</h2>
+<div class="form-container">
+    <h2>Rajbahal Digital</h2>
+    <form id="appointmentForm">
+        <label>Customer Name:</label>
+        <input type="text" id="name" placeholder="Enter Full Name" required>
 
-<form id="appointmentForm">
-<input type="text" id="name" placeholder="Full Name" required>
-<input type="tel" id="phone" placeholder="WhatsApp Number" required>
-<select id="service">
-<option value="">Select Service</option>
-<option>Janaseva</option>
-<option>Education Hub</option>
-<option>Mobile & Tech</option>
-</select>
-<input type="date" id="date" required>
-<button type="submit">Submit</button>
-</form>
+        <label>WhatsApp Number:</label>
+        <input type="tel" id="phone" placeholder="91XXXXXXXX" required>
+
+        <label>Service Type (Sabu Seva):</label>
+        <select id="service">
+            <option value="Aadhaar Update/Correction">Aadhaar Update/Correction</option>
+            <option value="New Aadhaar Card">New Aadhaar Card</option>
+            <option value="PAN Card New/Correction">PAN Card New/Correction</option>
+            <option value="Ration Card (New/Add Member)">Ration Card (New/Add Member)</option>
+            <option value="Income/Caste/Residence Cert.">Income/Caste/Residence Certificate</option>
+            <option value="Voter ID Card">Voter ID Card</option>
+            <option value="Labour Card Services">Labour Card Services</option>
+            <option value="Farmer Registration">Farmer Registration</option>
+            <option value="PM-Kisan Services">PM-Kisan Services</option>
+            <option value="Money Transfer/Withdrawal">Money Transfer/Withdrawal</option>
+            <option value="Electric Bill Payment">Electric Bill Payment</option>
+            <option value="Railway/Flight Ticket">Railway/Flight Ticket</option>
+            <option value="Photo Printing/Xerox">Photo Printing/Xerox</option>
+            <option value="Driving License">Driving License</option>
+            <option value="Other Digital Service">Other Services</option>
+        </select>
+
+        <button type="submit">Submit Request ✅</button>
+        <div id="success-msg">Dhanyawad! Aapka form submit ho gaya hai. Hum aapse sampark karenge.</div>
+    </form>
+</div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAA36wfnMT7LgCMUgjtHx8wsGYoBOHeXiQ",
-  authDomain: "education-c3132.firebaseapp.com",
-  databaseURL: "https://education-c3132-default-rtdb.firebaseio.com",
-  projectId: "education-c3132",
-  storageBucket: "education-c3132.firebasestorage.app",
-  messagingSenderId: "1024541965642",
-  appId: "1:1024541965642:web:e778014d245a9c3e2195b3"
-};
+    // Aapka Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyAA36vfnM77LgCMJgjTHx8wsGYoBQHzXIQ",
+        databaseURL: "https://education-c3132-default-rtdb.firebaseio.com",
+        projectId: "education-c3132",
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-document.getElementById("appointmentForm").addEventListener("submit", function(e){
-e.preventDefault();
+    document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const service = document.getElementById('service').value;
 
-push(ref(db, "appointments"), {
-name: document.getElementById("name").value,
-phone: document.getElementById("phone").value,
-service: document.getElementById("service").value,
-date: document.getElementById("date").value,
-status: "Pending",
-createdAt: new Date().toISOString()
-});
-
-alert("Dhanyawad! Aapki details Rajbahal Digital ko mil gayi hain. Hum 30 minute mein aapko WhatsApp par Approve/Reject ki jankari denge!");
-this.reset();
-});
+        const newApptRef = push(ref(db, 'appointments'));
+        set(newApptRef, {
+            name: name,
+            phone: phone,
+            service: service,
+            status: 'Pending',
+            date: new Date().toLocaleString()
+        }).then(() => {
+            document.getElementById('success-msg').style.display = 'block';
+            document.getElementById('appointmentForm').reset();
+            alert("Rajbahal Digital: Booking Successful!");
+        }).catch((error) => {
+            alert("Error: " + error.message);
+        });
+    });
 </script>
 
 </body>
 </html>
+
